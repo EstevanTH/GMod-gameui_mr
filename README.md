@@ -1,7 +1,7 @@
 # GMod-gameui_mr
 ## Simple customized Game UI for Garry's Mod
 
-This customized Game UI for Garry's Mod is designed in a way similar to the default one.
+This customized Game UI for Garry's Mod is designed in a way similar to the default one. It is translated in English and French.
 
 It features additional menu options with changeable color and a few on-screen details.
 
