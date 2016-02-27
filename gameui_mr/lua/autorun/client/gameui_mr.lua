@@ -124,7 +124,7 @@ local function CreateCustomUI()
 				else
 					TextBattery = IsLang("fr") and "Sur batterie ("..Battery.."%)" or "Battery powered ("..Battery.."%)"
 				end
-				local TextPlayers = ( IsLang("fr") and "Joueurs : " or "Players: " )..#player.GetAll().." / "..game.MaxPlayers()
+				local TextPlayers = ( IsLang("fr") and "Joueurs : " or "Players: " )..( player.GetAny and #player.GetAny() or #player.GetAll() ).." / "..game.MaxPlayers()
 				local TextPing = ( IsLang("fr") and "Ping : " or "Ping: " )..LocalPlayer():Ping().." ms"
 				local widths = {}
 				local width
