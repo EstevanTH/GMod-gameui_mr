@@ -1,7 +1,3 @@
---- toggleconsole
-
-
-
 -- Script written by Mohamed RACHID.
 -- Removing credits is illegal. You like cops, don't you?
 
