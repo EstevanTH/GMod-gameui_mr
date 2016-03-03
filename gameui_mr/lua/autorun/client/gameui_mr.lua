@@ -1,3 +1,7 @@
+--- toggleconsole
+
+
+
 -- Script written by Mohamed RACHID.
 -- Removing credits is illegal. You like cops, don't you?
 
@@ -26,6 +30,7 @@ local MenuGradient = Material( "../html/img/gradient.png", "nocull smooth" ) -- 
 local DefaultUI = false
 local StartDefaultUI = false
 local EndCustomUI = false
+
 
 local function DestroyCustomUI()
 	if IsValid( CustomUI ) then
@@ -247,12 +252,27 @@ local function DisplayCustomUI()
 	CustomUI:MakePopup()
 end
 
+local ConsoleKeys = {}
+for k=1,159 do
+	if input.LookupKeyBinding( k ) == "toggleconsole" then
+		table.insert( ConsoleKeys, k )
+	end
+end
+
 hook.Add( "PreRender", "gameui_mr", function()
 	if EndCustomUI then
 		EndCustomUI = false
 		HideCustomUI()
 	end
 	if gui.IsGameUIVisible() then
+		if !LocalPlayer():IsTyping() and !IsValid( vgui.GetKeyboardFocus() ) then
+			for _,ConsoleKey in ipairs( ConsoleKeys ) do
+				if input.IsButtonDown( ConsoleKey ) then
+					DefaultUI = true -- display the console
+					break
+				end
+			end
+		end
 		-- This step toggles the custom UI when Escape is pressed.
 		if !DefaultUI then
 			if !IsValid( CustomUI ) or !CustomUI:IsVisible() then
