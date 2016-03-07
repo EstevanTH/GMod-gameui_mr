@@ -84,17 +84,17 @@ local function PaintMenuOption( self )
 	surface.SetFont( "gameui_mr" )
 	surface.SetTextColor( self:IsHovered() and menu_text_hovered or self.TextColor )
 	surface.SetTextPos( 0,0 )
-	surface.DrawText( self.DisplayText )
+	surface.DrawText( self:GetText() )
+	return true -- hide default DButton text
 end
 
 local function AddMenuOption( CustomUI, DisplayText, TextColor )
 	local Option = vgui.Create( "DButton", CustomUI )
 	Option.Paint = PaintMenuOption
 	surface.SetFont( "gameui_mr" )
-	Option.DisplayText = DisplayText
 	Option.TextColor = TextColor or menu_text
 	local w,h = surface.GetTextSize( DisplayText )
-	Option:SetText( "" )
+	Option:SetText( DisplayText )
 	Option:SetSize( w,h )
 	return Option
 end
@@ -179,19 +179,19 @@ local function CreateCustomUI()
 			y = y+45
 			ActionRules:SetPos( x,y )
 			ActionRules.DoClick = function()
-				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/458606877330197649/#forum_op_458606877330197649", ActionRules.DisplayText )
+				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/458606877330197649/#forum_op_458606877330197649", ActionRules:GetText() )
 			end
 		local ActionHelp = AddMenuOption( CustomUI, IsLang("fr") and "Aide du serveur" or "Server's help", menu_text_special )
 			y = y+25
 			ActionHelp:SetPos( x,y )
 			ActionHelp.DoClick = function()
-				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/458606877330329328/#forum_op_458606877330329328", ActionHelp.DisplayText )
+				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/458606877330329328/#forum_op_458606877330329328", ActionHelp:GetText() )
 			end
 		local ActionAdminHelp = AddMenuOption( CustomUI, IsLang("fr") and "Pour les administrateurs" or "For administrators", menu_text_special )
 			y = y+25
 			ActionAdminHelp:SetPos( x,y )
 			ActionAdminHelp.DoClick = function()
-				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/412446890551812010/#forum_op_412446890551812010", ActionAdminHelp.DisplayText )
+				OpenOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/6/412446890551812010/#forum_op_412446890551812010", ActionAdminHelp:GetText() )
 			end
 		local ActionGroup = AddMenuOption( CustomUI, IsLang("fr") and "Notre groupe Steam" or "Our Steam group", menu_text_special )
 			y = y+25
