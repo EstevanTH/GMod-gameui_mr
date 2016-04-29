@@ -262,10 +262,15 @@ hook.Add( "PreRender", "gameui_mr", function()
 	end
 	if gui.IsGameUIVisible() then
 		if !LocalPlayer():IsTyping() and !IsValid( vgui.GetKeyboardFocus() ) then
-			for _,ConsoleKey in ipairs( ConsoleKeys ) do
-				if input.IsButtonDown( ConsoleKey ) then
-					DefaultUI = true -- display the console
-					break
+			-- Display the console if requested:
+			if ( input.IsKeyDown( KEY_LSHIFT ) or input.IsKeyDown( KEY_RSHIFT ) ) and input.IsKeyDown( KEY_ESCAPE ) then
+				DefaultUI = true
+			else
+				for _,ConsoleKey in ipairs( ConsoleKeys ) do
+					if input.IsButtonDown( ConsoleKey ) then
+						DefaultUI = true
+						break
+					end
 				end
 			end
 		end
