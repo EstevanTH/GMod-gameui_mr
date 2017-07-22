@@ -77,7 +77,11 @@ local function OpenOverlayPage( url, title )
 			WebFrame:SetPos( scr_w-w,0 )
 	end
 	CustomUI.WebFrame:SetTitle( title or "" )
-	CustomUI.WebFrame.WebPage:OpenURL( url )
+	if string.lower( string.sub( url, 1,6 ) )~="<html>" then
+		CustomUI.WebFrame.WebPage:OpenURL( url )
+	else
+		CustomUI.WebFrame.WebPage:SetHTML( url )
+	end
 end
 
 local RequestingSteamOverlayPage = false
