@@ -80,6 +80,12 @@ local function OpenOverlayPage( url, title )
 	CustomUI.WebFrame.WebPage:OpenURL( url )
 end
 
+local RequestingSteamOverlayPage = false
+local function OpenSteamOverlayPage( url )
+	RequestingSteamOverlayPage = 0 -- wait until open request has gone
+	gui.OpenURL( url )
+end
+
 local function PaintMenuOption( self )
 	surface.SetFont( "gameui_mr" )
 	surface.SetTextColor( self:IsHovered() and menu_text_hovered or self.TextColor )
@@ -197,13 +203,13 @@ local function CreateCustomUI()
 			y = y+25
 			ActionGroup:SetPos( x,y )
 			ActionGroup.DoClick = function()
-				gui.OpenURL( "http://steamcommunity.com/groups/ujp_universityrp/" )
+				OpenSteamOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/" )
 			end
 		local ActionOfferLesson = AddMenuOption( CustomUI, IsLang("fr") and "Proposer un nouveau cours" or "Offer a new lesson", menu_text_special )
 			y = y+25
 			ActionOfferLesson:SetPos( x,y )
 			ActionOfferLesson.DoClick = function()
-				gui.OpenURL( "http://steamcommunity.com/groups/ujp_universityrp/discussions/2/" )
+				OpenSteamOverlayPage( "http://steamcommunity.com/groups/ujp_universityrp/discussions/2/" )
 			end
 		
 		local ActionSelectServer = AddMenuOption( CustomUI, IsLang("fr") and "Trouver un autre serveur" or "Find another server" )
@@ -241,6 +247,7 @@ local function CreateCustomUI()
 end
 
 local function DisplayCustomUI()
+	RequestingSteamOverlayPage = false
 	if !IsValid( CustomUI ) then
 		CreateCustomUI()
 	end
@@ -279,10 +286,13 @@ hook.Add( "PreRender", "gameui_mr", function()
 			if !IsValid( CustomUI ) or !CustomUI:IsVisible() then
 				DisplayCustomUI()
 			else
-				DefaultUI = false
-				HideCustomUI()
+				if not RequestingSteamOverlayPage then
+					HideCustomUI()
+				end
 			end
-			gui.HideGameUI()
+			if not RequestingSteamOverlayPage then
+				gui.HideGameUI()
+			end
 		end
 	elseif StartDefaultUI then
 		-- The default game UI is opening.
@@ -291,6 +301,12 @@ hook.Add( "PreRender", "gameui_mr", function()
 	else
 		-- The default game UI is closed.
 		DefaultUI = false
+		if RequestingSteamOverlayPage and RequestingSteamOverlayPage>0 then -- value is 0 when game UI has not appeared yet after gui.OpenURL()
+			RequestingSteamOverlayPage = false
+		end
+	end
+	if RequestingSteamOverlayPage then
+		RequestingSteamOverlayPage = RequestingSteamOverlayPage+1
 	end
 end )
 
